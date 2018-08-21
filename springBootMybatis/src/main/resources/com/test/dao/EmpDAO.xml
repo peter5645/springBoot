@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.dao.EmpDAO">  <!-- 對映到哪個Interface -->
+
+
+
+	<select id="getAll" resultType="Emp">  <!-- 只打emp需配合mybatis.type-aliases-package -->
+		select empno,ename,deptno from
+		emp2
+	</select>
+
+<!-- 	<select id="getEmp" parameterType="com.yoMybatisSpring.model.Emp" resultType="com.yoMybatisSpring.model.Emp"> -->
+<!-- 	select empno,ename,deptno from emp2 -->
+<!-- 	where 1 = 1 -->
+<!-- 	<if test="empno != null and empno != ''"> -->
+<!-- 	and empno=#{empno} -->
+<!-- 	</if> -->
+<!-- 	<if test="deptno != null and deptno != ''"> -->
+<!-- 	and deptno=#{deptno} -->
+<!-- 	</if> -->
+<!-- 	</select> -->
+
+	<select id="getEmp" parameterType="com.test.model.Emp"
+		resultType="com.test.model.Emp">
+		select empno,ename,deptno from emp2
+		<where>
+			<if test="empno != null and empno != ''">
+				empno=#{empno}
+			</if>
+			<if test="deptno != null and deptno != ''">
+				and deptno=#{deptno}
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="saveOrUpdate" parameterType="com.test.model.Emp">
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			select count(*) from emp2 where empno = #{empno}
+		</selectKey>
+		<if test="count > 0">
+			update emp2 set
+			ename = #{ename}
+			where empno = #{empno}
+		</if>
+		<if test="count == 0">
+			insert into emp2(empno,ename,deptno) values (#{empno},#{ename},#{deptno})
+		</if>
+	</insert>
+	
+	<delete id="delete">
+		delete FROM emp2 where empno = #{empno}
+	</delete>
+	
+	
+	<select id="selectEmpDept"  resultType="com.test.model.Emp">
+		select e.empno as empno
+		, e.ename as ename 
+		, d.deptno as deptno 
+		, d.dname as dname 
+		, d.loc as loc
+		from emp2 e join dept2 d on e.deptno = d.deptno
+	</select>
+
+</mapper>
