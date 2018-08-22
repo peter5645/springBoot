@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: spring-config-client
+  profiles:
+    active: dev
+  cloud:
+    config:
+      name: test-config
+      uri: http://localhost:8085

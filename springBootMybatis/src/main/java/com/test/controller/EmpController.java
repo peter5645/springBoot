@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -81,10 +82,17 @@ public class EmpController {
     
     @Autowired
     private UtilTest utilTest;
-    
+
+    @Value("${example.property}")
+    private String hello;
+
+    @Value("${test.test}")
+    private String test;
+
     @RequestMapping(value = "/sample/sayHi", method = RequestMethod.GET)
     public ResponseEntity<String> sayHi() {
         String hi = utilTest.sayHi();
-        return new ResponseEntity<String>(hi, HttpStatus.OK);
+        System.out.println(hello);
+        return new ResponseEntity<String>(hi+hello+test, HttpStatus.OK);
     }
 }
