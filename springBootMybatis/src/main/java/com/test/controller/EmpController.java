@@ -95,4 +95,11 @@ public class EmpController {
         System.out.println(hello);
         return new ResponseEntity<String>(hi+hello+test, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/sample/sayHi/{name}", method = RequestMethod.GET)
+    public ResponseEntity<String> sayHi(@PathVariable String name) {
+        String hi = utilTest.sayHi();
+        System.out.println(hello);
+        return new ResponseEntity<String>(hi+hello+test+"name : "+name, HttpStatus.OK);
+    }
 }
